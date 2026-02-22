@@ -58,14 +58,6 @@ cd benchmark-health/backend
 pip install fastapi uvicorn pymongo python-multipart
 ```
 
-### 3️⃣ Start MongoDB
-
-Make sure MongoDB is running locally:
-
-```
-mongodb://localhost:27017
-```
-
 ---
 
 ## ▶️ Running the Server
