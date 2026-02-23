@@ -1,0 +1,71 @@
+# ===============================
+# 🐍 Python
+# ===============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+
+# ===============================
+# 🌱 Virtual Environments
+# ===============================
+venv/
+.env
+.env.*
+.python-version
+
+# ===============================
+# 🧠 FastAPI / Uvicorn
+# ===============================
+*.log
+uvicorn.log
+
+# ===============================
+# 💻 IDE / Editors
+# ===============================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ===============================
+# 🖥️ OS Files
+# ===============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===============================
+# 📦 MongoDB Dumps / Local Data
+# ===============================
+dump/
+*.bson
+
+# ===============================
+# 🌐 Frontend (Future React)
+# ===============================
+node_modules/
+build/
+dist/
+coverage/
+
+# ===============================
+# 🔐 Secrets / Config
+# ===============================
+.env.local
+.env.production
+*.pem
+*.key
+
+# ===============================
+# 📊 Jupyter / Data Science
+# ===============================
+.ipynb_checkpoints/
+
+# ===============================
+# 🏥 Federated Datasets (OPTIONAL)
+# ===============================
+# Uncomment below if you DON'T want datasets on GitHub
+# federation_nodes/
