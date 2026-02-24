@@ -1,11 +1,16 @@
 from fastapi import FastAPI
-from routers import models, federation  
+from routers import models, federation, report
 
 app = FastAPI(title="Benchmark Health")
 
-# include routes
+# ⭐ Model upload routes
 app.include_router(models.router, prefix="/models")
-app.include_router(federation.router, prefix="/federation") 
+
+# ⭐ Federation execution routes
+app.include_router(federation.router, prefix="/federation")
+
+# ⭐ Report generation routes
+app.include_router(report.router, prefix="/federation")
 
 @app.get("/")
 def home():

@@ -1,21 +1,22 @@
-from fastapi import APIRouter
-from schemas.model_schema import ModelSchema
-from config.db import models_collection
+from fastapi import APIRouter, UploadFile, File
+import shutil
+import os
 
 router = APIRouter()
 
+MODEL_DIR = "models_storage"
+
 @router.post("/upload")
-def upload_model(model: ModelSchema):
+async def upload_model(file: UploadFile = File(...)):
 
-    data = model.model_dump()
+    file_path = os.path.join(MODEL_DIR, file.filename)
 
-    # insert and capture inserted id
-    result = models_collection.insert_one(data)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
-    # ✅ convert ObjectId to string
-    data["_id"] = str(result.inserted_id)
+    model_id = file.filename.replace(".pkl", "")
 
     return {
-        "message": "Model registered successfully",
-        "model": data
+        "message": "Model uploaded successfully",
+        "model_id": model_id
     }

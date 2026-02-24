@@ -3,25 +3,43 @@ import os
 
 BASE_PATH = "federation_nodes"
 
+
 def load_datasets():
+
     datasets = {}
 
+    if not os.path.exists(BASE_PATH):
+        raise ValueError(f"{BASE_PATH} folder not found")
+
+    # ⭐ loop through hospital folders
     for hospital in os.listdir(BASE_PATH):
 
         hospital_path = os.path.join(BASE_PATH, hospital)
 
-        if os.path.isdir(hospital_path):
+        if not os.path.isdir(hospital_path):
+            continue
 
-            for file in os.listdir(hospital_path):
+        # ⭐ find CSV files
+        for file in os.listdir(hospital_path):
 
-                if file.endswith(".csv"):
-                    file_path = os.path.join(hospital_path, file)
+            if not file.endswith(".csv"):
+                continue
 
-                    df = pd.read_csv(file_path)
+            file_path = os.path.join(hospital_path, file)
 
-                    if "label" not in df.columns:
-                        raise ValueError(f"{file} missing label column")
+            try:
+                df = pd.read_csv(file_path)
 
-                    datasets[hospital] = df
+                # ⭐ ensure label column exists
+                if "label" not in df.columns:
+                    print(f"⚠ Skipping {file} — no label column")
+                    continue
+
+                datasets[hospital] = df
+
+                print(f"✅ Loaded dataset: {hospital} ({file})")
+
+            except Exception as e:
+                print(f"❌ Failed loading {file}: {e}")
 
     return datasets
