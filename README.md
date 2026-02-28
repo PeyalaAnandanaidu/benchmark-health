@@ -1,237 +1,367 @@
-# 🧠 Benchmark Health — Phase 2 Backend
+🧠 Benchmark Health — Federated AI Evaluation Platform
 
-Benchmark Health is a **privacy-first federated AI model validation platform** designed to help developers and healthcare organizations evaluate AI models across multiple datasets **without sharing sensitive data**.
+Benchmark Health is a privacy-first federated AI validation platform that enables secure evaluation of machine learning models across multiple healthcare datasets without sharing sensitive patient data.
 
-This repository now includes **Phase-1 + Phase-2 Backend**, introducing a **Federated Node Simulator** built with **FastAPI + MongoDB + Pandas**.
+Instead of moving hospital data to companies, the platform moves models to data — ensuring privacy, compliance, and fairness.
 
----
+🚀 Core Idea
+Traditional ML:
+Hospital Data → Company Server → Model Evaluation ❌
 
-# 🚀 Project Purpose
+Benchmark Health:
+Model → Hospital Node → Local Evaluation → Metrics Only ✅
 
-Healthcare AI models often fail when deployed across different populations due to lack of diverse validation data. Hospitals cannot freely share patient datasets because of privacy and regulatory constraints.
+No raw patient data ever leaves hospital systems.
 
-Benchmark Health solves this by enabling:
+🎯 Key Features
+🔐 Privacy-Preserving Architecture
 
-✅ **Federated Validation** — models move to data
-✅ Multi-dataset benchmarking
-✅ Privacy-preserving architecture
+No raw dataset sharing
 
----
+Federated evaluation simulation
 
-# 🌐 What Changed in Phase-2
+Secure model execution design
 
-Phase-2 introduces a **Federated Node Simulator**, where each dataset acts like an independent hospital.
+📊 Multi-Node Benchmarking
 
-Instead of:
+Evaluate models across multiple hospital datasets
 
-```
-One model → One dataset
-```
+Per-node performance metrics
 
-Your system now performs:
+Feature compatibility validation
 
-```
-One model → Multiple hospitals → Aggregated results
-```
+⚖️ Fairness & Bias Monitoring
 
----
+Group-wise accuracy tracking
 
-# 🧱 Tech Stack
+Bias gap calculation
 
-* **Backend:** FastAPI (Python)
-* **Database:** MongoDB
-* **Server:** Uvicorn
-* **Data Processing:** Pandas
-* **Validation:** Pydantic
+Protected attribute detection (sex, race, age)
 
----
+📄 Automated Compliance Reports
 
-# 📂 Updated Project Structure
+Professional PDF benchmark reports
 
-```
-benchmark-health/
-└── backend/
-    ├── main.py
-    ├── config/
-    │   └── db.py
-    ├── routers/
-    │   ├── models.py
-    │   └── federation.py        ⭐ NEW (Phase-2)
-    ├── services/
-    │   ├── dataset_loader.py    ⭐ NEW
-    │   └── orchestrator.py      ⭐ NEW
-    ├── schemas/
-    │   └── model_schema.py
-    └── federation_nodes/        ⭐ NEW
-        ├── hospital_A/adult.csv
-        ├── hospital_B/heart.csv
-        ├── hospital_C/diabetes.csv
-        └── hospital_D/compas.csv
-```
+Accuracy summaries
 
----
+Bias risk indicators
 
-# 🧩 Phase-2 Architecture
+Node-wise breakdown
 
-## Federation Flow
+🎨 React (Vite) Dashboard
 
-```
-User uploads model
-        ↓
-POST /federation/run/{model_id}
-        ↓
-Dataset Loader scans hospital folders
-        ↓
-Federation Orchestrator executes simulation
-        ↓
-Results returned per hospital node
-```
+Model upload interface
 
-Each hospital folder represents an independent institution.
+Federation execution
 
----
+Chart visualizations
 
-# ⚙️ Installation
+PDF report download
 
-## 1️⃣ Clone Repository
+🛠 Tech Stack
+Backend
 
-```
-git clone <repo-url>
+FastAPI
+
+MongoDB
+
+Pandas
+
+Scikit-learn
+
+ReportLab (PDF generation)
+
+Matplotlib (Charts)
+
+Frontend
+
+React (Vite)
+
+Axios
+
+Recharts
+
+Tailwind CSS (optional styling)
+
+🏗 System Architecture
+Frontend (React + Vite)
+        │
+        ▼
+Backend (FastAPI)
+ ├── /models
+ ├── /federation
+ └── /reports
+        │
+        ▼
+Services Layer
+ ├── dataset_loader.py
+ ├── orchestrator.py
+ ├── evaluator.py
+ ├── fairness.py
+ └── report_generator.py
+        │
+        ▼
+Data Layer
+ ├── MongoDB (metadata)
+ └── Federation Nodes (hospital datasets)
+📦 Installation Guide
+🔹 Prerequisites
+
+Python 3.9+
+
+Node.js 16+
+
+MongoDB
+
+Git
+
+🖥 Backend Setup
+git clone <your-repo-url>
 cd benchmark-health/backend
-```
 
-## 2️⃣ Install Dependencies
+python -m venv venv
+venv\Scripts\activate   # Windows
+# source venv/bin/activate  # Mac/Linux
 
-```
-pip install fastapi uvicorn pymongo python-multipart pandas
-```
+pip install fastapi uvicorn pymongo python-multipart \
+pandas numpy scikit-learn joblib reportlab matplotlib
 
-<<<<<<< HEAD
-=======
-## 3️⃣ Start MongoDB
+Start MongoDB locally:
 
-```
 mongodb://localhost:27017
-```
 
->>>>>>> 0fa30c7 (phase-2)
----
+Run backend:
 
-# ▶️ Running the Server
-
-Inside `backend/`:
-
-```
 uvicorn main:app --reload
-```
 
-Server URL:
+Backend URL:
 
-```
 http://127.0.0.1:8000
-```
 
----
+Swagger Docs:
 
-# 🧪 API Testing (Swagger UI)
-
-Open:
-
-```
 http://127.0.0.1:8000/docs
-```
+🌐 Frontend Setup (Vite)
+cd ../frontend
+npm install
+npm install axios recharts lucide-react
+npm run dev
 
----
+Frontend URL:
 
-## Phase-1 Endpoint
+http://localhost:5173
+📚 API Overview
+1️⃣ Upload Model
+POST /models/upload
 
-### POST `/models/upload`
+Form-data:
 
-```json
+file: model.pkl
+
+Response:
+
 {
-  "name": "heart_model",
-  "type": "classification"
+  "message": "Model uploaded successfully",
+  "model_id": "heart_model"
 }
-```
+2️⃣ Run Federation
+POST /federation/run/{model_id}
 
----
+Response:
 
-## Phase-2 Endpoint ⭐ NEW
-
-### POST `/federation/run/{model_id}`
-
-Example:
-
-```
-POST /federation/run/test_model
-```
-
-Example Response:
-
-```json
 [
-  {"model_id":"test_model","node":"hospital_A","records":32561},
-  {"model_id":"test_model","node":"hospital_B","records":303},
-  {"model_id":"test_model","node":"hospital_C","records":768},
-  {"model_id":"test_model","node":"hospital_D","records":7214}
+  {
+    "model_id": "heart_model",
+    "node": "hospital_B",
+    "status": "evaluated",
+    "accuracy": 0.93,
+    "precision": 0.91,
+    "recall": 0.97,
+    "f1_score": 0.94,
+    "roc_auc": 0.93,
+    "bias_gap": 0.02
+  }
 ]
-```
+3️⃣ Generate Report
+POST /federation/report/{model_id}
 
----
+Returns:
 
-# 📦 Phase-2 Features
+PDF File Download
+🏥 Federation Nodes
 
-✅ Federated Node Simulation
-✅ Dynamic Dataset Loader
-✅ Multi-Hospital Architecture
-✅ Dataset Standardization (`label` column)
-✅ Federation API Endpoint
+Datasets are stored as:
 
----
+backend/federation_nodes/
+├── hospital_A/
+│   └── adult.csv
+├── hospital_B/
+│   └── heart.csv
+├── hospital_C/
+│   └── diabetes.csv
+├── hospital_D/
+│   └── compas.csv
+├── hospital_E/
+│   └── breast_cancer.csv
+📄 Dataset Requirements
 
-# 🔐 Dataset Requirement
+Each dataset must:
 
-Each hospital dataset must contain a target column named:
+Be CSV format
 
-```
-label
-```
+Contain a target column named: label
 
-Example mappings:
+Example mapping:
 
-| Dataset       | Original Column | Required |
-| ------------- | --------------- | -------- |
-| Adult Income  | income          | label    |
-| Heart Disease | target          | label    |
-| Diabetes      | Outcome         | label    |
-| COMPAS        | is_recid        | label    |
+Dataset	Original Target	Required
+Adult	income	label
+Heart	target	label
+Diabetes	Outcome	label
+COMPAS	is_recid	label
+Breast Cancer	diagnosis	label
+🔄 Development Phases
+Phase 1 — Model Management
 
----
+Upload models
 
-# 🧠 Why Phase-2 Matters
+Store metadata in MongoDB
 
-Phase-1 provided backend infrastructure.
+Save model file locally
 
-Phase-2 transforms the system into:
+Phase 2 — Federated Node Simulator
 
-```
+Multi-hospital simulation
+
+Dataset compatibility check
+
+Per-node evaluation status
+
+Phase 3 — Evaluation Engine
+
+Accuracy
+
+Precision
+
+Recall
+
+F1 Score
+
+ROC AUC
+
+Phase 4 — Fairness Monitoring
+
+Protected attribute detection
+
+Group accuracy comparison
+
+Bias gap calculation
+
+Phase 5 — Report Generator
+
+Executive summary
+
+Performance table
+
+Accuracy chart
+
+Fairness metrics
+
+Downloadable PDF
+
+🔐 Real-World Deployment Vision
+
+In production:
+
+Hospitals run secure evaluation nodes
+
+Models execute inside sandboxed containers
+
+Only aggregate metrics are returned
+
+No raw patient data is shared
+
+Signed model verification enforced
+
+Future upgrades:
+
+Authentication & Role-based access
+
+Remote hospital APIs
+
+Docker-based secure execution
+
+Cloud storage integration
+
+Kubernetes deployment
+
+📁 Project Structure
+benchmark-health/
+│
+├── backend/
+│   ├── main.py
+│   ├── config/
+│   ├── routers/
+│   ├── services/
+│   ├── schemas/
+│   ├── models_storage/
+│   └── federation_nodes/
+│
+├── frontend/
+│   ├── src/
+│   ├── pages/
+│   ├── components/
+│   └── services/
+│
+├── README.md
+├── requirements.txt
+└── .gitignore
+🚀 Quick Start Summary
+
+Start MongoDB
+
+Run backend → uvicorn main:app --reload
+
+Run frontend → npm run dev
+
+Upload model
+
+Run federation
+
+Download report
+
+📈 Roadmap
+Upcoming Enhancements
+
+Remote hospital node simulator
+
+JWT authentication
+
+Role-based dashboard
+
+Real-time WebSocket updates
+
+Multi-model comparison
+
+Cloud deployment support
+
+Secure containerized evaluation
+
+🤝 Contributing
+
+Fork repository
+
+Create feature branch
+
+Commit changes
+
+Push and open PR
+
+📄 License
+
+MIT License
+
+👨‍💻 Author
+
+Benchmark Health Team
 Federated AI Validation Platform
-```
-
-The backend now simulates real-world distributed evaluation pipelines used in privacy-sensitive industries.
-
----
-
-# 🔜 Next Phases (Planned)
-
-* Evaluation Engine (Accuracy, Precision, Recall)
-* Fairness Analyzer (Bias Metrics)
-* MongoDB Result Storage
-* React Analytics Dashboard
-
----
-
-# 👨‍💻 Author
-
-Benchmark Health — Federated AI Validation Platform
 Built for privacy-first healthcare AI infrastructure.
