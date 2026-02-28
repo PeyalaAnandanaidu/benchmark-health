@@ -73,10 +73,7 @@ benchmark-health/
 │   ├── services/
 │   ├── federation_nodes/
 │   └── models_storage/
-│
-├── frontend/
-│   ├── pages/
-│   └── components/
+
 ▶️ How To Run
 1️⃣ Start Backend
 cd backend
@@ -93,6 +90,7 @@ npm run dev
 Open:
 
 http://localhost:5173
+
 🏥 Federation Nodes (Sample Datasets)
 backend/federation_nodes/
 ├── hospital_A/
