@@ -66,13 +66,6 @@ Axios
 
 Recharts
 
-📁 Project Structure
-benchmark-health/
-├── backend/
-│   ├── routers/
-│   ├── services/
-│   ├── federation_nodes/
-│   └── models_storage/
 
 ▶️ How To Run
 1️⃣ Start Backend
@@ -91,16 +84,7 @@ Open:
 
 http://localhost:5173
 
-🏥 Federation Nodes (Sample Datasets)
-backend/federation_nodes/
-├── hospital_A/
-├── hospital_B/
-├── hospital_C/
-├── hospital_D/
 
-Each dataset must contain a target column named:
-
-label
 📄 Example Workflow
 
 Upload model
